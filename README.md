@@ -1,5 +1,5 @@
-# Assignment
-​Assignment: Claude Architecture & Agentic Workflows
+#Assignment: Claude Architecture & Agentic Workflows
+
 ​Task A: Architecture Write-up
 ​Claude-based workflows are structured as a layered ecosystem where reasoning is separated from execution.  
 ​The Layers of the Stack
