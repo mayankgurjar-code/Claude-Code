@@ -1,76 +1,120 @@
-#Assignment: Claude Architecture & Agentic Workflows
+Assignment: Learning Claude Architecture + Creating Agents
+​Course: AI Systems & Agentic Workflows
+Topic: Understanding Claude's Architecture and Agent Creation  
+​Task A: Architecture Write-up (The Full Stack)
+​Claude-based workflows are structured as a layered system where reasoning is separated from execution.  
+​1. The Five Layers
+​.claude.md (Global Rules): Defines "how to think," reasoning habits, tone, safety, and uncertainty handling.  
+​skill/ (Specialized Capabilities): A collection of modules, templates, and tool wrappers that guide Claude through specific tasks.  
+​Claude Engine (Reasoning + Coordination): The core executor that interprets intent, plans steps, selects tools, and manages constraints.  
+​Tools (Hands): External capabilities like the file system, shell commands, and data retrieval.  
+​User (Director): Provides the initial intent, goals, constraints, and acceptance criteria.  
+​2. Architecture Diagram
 
-​Task A: Architecture Write-up
-​Claude-based workflows are structured as a layered ecosystem where reasoning is separated from execution.  
-​The Layers of the Stack
-​.claude.md (The Core Guidelines): This file acts as the "constitutional" layer. It defines global rules, reasoning habits, and safety boundaries that the model must always follow.  
-​skill/ (The Action Library): A directory containing specialized procedures and tool "recipes". These allow Claude to handle specific tasks (like code audits) without needing to learn them from scratch every time.  
-​Claude Engine (The Orchestrator): The central reasoning engine that interprets user intent. It plans the steps, selects the right tools, and validates that the output meets the user's needs.  
-​Tools (The Functional Interface): These are the "hands" of the system, such as the shell, file system, or web browsers. They allow the model to interact with the real world.  
-​User (The Director): The human who provides the intent, goals, and feedback.  
-​Task B: Sample .claude.md (Global Instructions)
-​This configuration is designed for a high-security engineering firm.  
+graph TD
+    User[User: Director] -->|Provides Intent| Engine[Claude Engine: Reasoning/Coordination]
+    Engine <-->|Consults Rules| Rules[.claude.md: Global Instructions]
+    Engine <-->|Utilizes| Skills[skill/ folder: Dynamic Resources]
+    Engine <-->|Executes via| Tools[Tools: Shell/Files/API]
 
-# Engineering Standards: SecureOps AI
+Task B: "How Claude Thinks" via .claude.md
+​Below is a sample .claude.md configuration for a technical organization.  
+
+# Organization Rules: NexusTech
 
 ## 1. Tone and Style
-- [span_18](start_span)Communication must be clinical, technical, and objective[span_18](end_span).
-- [span_19](start_span)Avoid conversational filler; prioritize bulleted lists for clarity[span_19](end_span).
+- [span_9](start_span)Use concise, technical language[span_9](end_span).
+- [span_10](start_span)Avoid conversational fluff; prioritize direct answers[span_10](end_span).
 
 ## 2. Reasoning Constraints
-- **[span_20](start_span)Validation First:** Always generate a plan and ask for confirmation before modifying more than 3 files[span_20](end_span).
-- **[span_21](start_span)Checklist Requirement:** Every complex task must start with a "Definition of Done" checklist[span_21](end_span).
+- **[span_11](start_span)Verify Assumptions:** Always state assumptions before taking destructive actions[span_11](end_span).
+- **[span_12](start_span)Missing Inputs:** Explicitly ask the user for missing data rather than guessing[span_12](end_span).
+- **[span_13](start_span)Checklists:** Use checklists for multi-step execution[span_13](end_span).
 
-## 3. Tool Usage & Safety
-- **Shell Policy:** Only use the shell for `ls`, `cat`, and `grep`. [span_22](start_span)Never execute `rm` or `chmod` without explicit user permission[span_22](end_span).
-- **[span_23](start_span)Data Privacy:** Automatically redact all environment variables and private keys from the output[span_23](end_span).
+## 3. Tool Usage Policy
+- **[span_14](start_span)Builds:** Use the shell tool for builds and testing[span_14](end_span).
+- **[span_15](start_span)Protection:** Do not delete files without explicit user confirmation[span_15](end_span).
+- **[span_16](start_span)Audit:** Log all shell commands before execution[span_16](end_span).
 
-## 4. Output Format
-- [span_24](start_span)All responses must end with a "Current System State" and "Action Items" section[span_24](end_span).
+## 4. Safety Guardrails
+- **[span_17](start_span)Secrets:** Redact API keys or passwords from output[span_17](end_span).
+- **[span_18](start_span)Compliance:** Ensure all generated code meets internal security standards[span_18](end_span).
 
-Task C: Skill Design (Library Modules)
-​These skills represent modular capabilities.  
-​1. skill/issue_analyzer
-​Purpose: To parse bug reports and map them to specific code sections.  
-​Inputs: A GitHub issue description and the source directory.  
-​Tool Usage: Uses grep to find keywords and ls to map the file structure.  
-​Test Case: Input a "404 Error" report → Expect identification of the routing logic in app.py.  
-​2. skill/security_scan
-​Purpose: To identify weak security configurations.  
-​Outputs: A prioritized list of vulnerabilities with remediation steps.  
-​Algorithm: Scans configuration files for default passwords or unencrypted ports.  
-​3. skill/api_mapper
-​Purpose: To generate a map of all available API endpoints from a codebase.  
-​Inputs: Backend source files.  
-​Steps: 1. Identify controller decorators. 2. Extract methods and paths. 3. Format as a table.  
-​Task D: Claude Engine (Coordination)
-​The engine manages the workflow through a series of internal loops:  
-​Planning: Decomposes "Refactor the login logic" into sub-tasks.  
-​Routing: Decides to call the skill/api_mapper to understand the current setup.  
-​State Management: Tracks which files have been refactored to avoid redundant work.  
-​Validation: Runs unit tests after changes to ensure stability.  
-​Task F: Agent Design (Practical Designs)
-​These agents follow the required template exactly.  
-​Agent 1: The Code Guardian
-​Agent Name: Guardian-Agent
-​Purpose: Ensuring all code meets safety and style guidelines.  
-​Responsibilities: Code review, linting check, and vulnerability detection.  
-​Out-of-Scope: Fixing the code automatically; altering project infrastructure.  
-​Tools Allowed: read_file, shell (for linting tools).  
-​Rules: Never approve code that lacks docstrings or contains "TODO" comments.  
-​Quality Checklist: [ ] No secrets found [ ] Linter passed [ ] Tests included.  
-​Agent 2: The Documentation Architect
-​Agent Name: Doc-Arch
-​Purpose: Keeping technical documentation in sync with the code.  
-​Responsibilities: Updating README files, generating API docs.  
-​Out-of-Scope: Running the application; writing new feature code.  
-​Inputs Required: Source code and recent commit history.  
-​Tools Allowed: read_file, write_file.  
-​Quality Checklist: [ ] All links active [ ] Table of contents updated.  
+## 5. Output Format
+- [span_19](start_span)Every response must include a "Summary" and "Action Items" section[span_19](end_span).
+
+Task C: Skill Design (skill/modules)
+​Skill 1: skill/triage
+​Purpose: Prioritizes issues and produces a remediation plan.
+​Inputs: Bug report description, repository link.
+​Outputs: Priority level (High/Med/Low), assigned team, suggested fix steps.
+​Tool Usage: read_file, shell (to check logs).
+​Steps: 1. Analyze logs; 2. Compare against known bugs; 3. Score severity.
+​Failure Modes: Vague bug report. Mitigation: Ask follow-up questions.
+​Test Case: Input a database crash report; verify it outputs "Priority: High."
+​Skill 2: skill/doc_summarize
+​Purpose: Summarizes a technical spec into core requirements.
+​Inputs: Document file path.
+​Outputs: Summary, Functional Requirements, Technical Constraints.
+​Steps: 1. Read document; 2. Identify keywords; 3. Structure into bullet points.
+​Test Case: Provide a 10-page spec; verify the summary is under 500 words.
+​Skill 3: skill/audit_crypto
+​Purpose: Scans code/config for insecure crypto usage.
+​Inputs: Directory path.
+​Tools: grep, ls.
+​Failure Modes: False positives in comments. Mitigation: Use regex to target active code only.
+​Test Case: Scan a file with MD5; verify the skill flags it as insecure.
+​Task D: Claude Engine: Coordination & Validation
+​The Claude engine manages the "thinking" process through specific internal roles:  
+​Planner: Decomposes a large task into smaller, executable steps.  
+​Router: Chooses the correct skill or tool for each sub-task.  
+​Checker: Validates that the output meets the requirements of .claude.md.  
+​Workflow Trace Example:
+​Intent: "Fix the authentication bug."
+​Step 1: Engine uses shell to list files in /auth.  
+​Step 2: Engine calls skill/triage to identify the error pattern.  
+​Step 3: Engine reads the specific file causing the error.  
+​Step 4: Engine proposes a fix and asks User for confirmation (Ambiguity Handling).  
+​Step 5: Engine applies the fix and runs a test script.  
+​Task E & F: Creating Agents in Claude
+​Agent 1: The Security Auditor
+​Agent Name: Security Sentinel.
+​Purpose: Ensure all code adheres to security standards.
+​Responsibilities: Scan for hardcoded secrets, check crypto libraries, and audit dependency versions.
+​Out-of-Scope: Fixing functional UI bugs or writing feature code.
+​Inputs Required: Source code directory path.
+​Outputs Produced: Vulnerability report (PDF/Markdown).
+​Tools Allowed: shell, read_file, skill/audit_crypto.
+​Rules: Never share raw secrets in logs; always suggest a modern replacement for legacy crypto.
+​Decision Policy: Assume "High" severity if unsure of an exploit's impact.
+​Quality Checklist: [ ] Secrets redacted? [ ] NIST standards checked? [ ] Mitigation steps included?
+​Agent 2: The Documentation Specialist
+​Agent Name: DocuBot.
+​Purpose: Convert complex code into readable documentation.
+​Responsibilities: Generate README files, API references, and change logs.
+​Out-of-Scope: Running code audits or performance testing.
+​Inputs Required: Codebase and list of recent commits.
+​Outputs Produced: Updated README.md and docs/ folder.
+​Tools Allowed: read_file, write_file, skill/doc_summarize.
+​Rules: Use technical but accessible language.
+​Decision Policy: Ask for clarification if code comments are missing or ambiguous.
+​Quality Checklist: [ ] Links functional? [ ] Examples included? [ ] Tone matches .claude.md?
 ​Task G: Multi-Agent Orchestration
-​This architecture uses a Coordinator-Specialist pattern.  
-​Orchestration Components
-​Coordinator Agent: Receives the user goal and breaks it into specialized tasks for the specialists.  
-​Routing Policy: If the task requires deep code analysis → Route to Guardian-Agent. If it requires documentation → Route to Doc-Arch.  
-​Conflict Resolution: If specialists provide conflicting information, the Coordinator reverts to the .claude.md rules to decide the final course of action.  
-​Merge Strategy: The Coordinator combines the Guardan's security report and the Architect's documentation into one comprehensive summary.  
+​1. Orchestration Architecture
+​1 Coordinator Agent: Receives the user request and routes it.
+​Specialist 1 (Auditor): Checks for security risks.
+​Specialist 2 (Doc Specialist): Updates the documentation based on the Auditor's findings.
+​2. Policies
+​Routing: If request includes "Check" or "Scan" → Specialist 1. If request includes "Explain" or "Write" → Specialist 2.  
+​Conflict Resolution: If Specialist 1 finds a bug but Specialist 2 says the code is ready, the Coordinator halts the process until the bug is addressed.  
+​Merge Strategy: The Coordinator combines the Audit Report and the Documentation into a single Final Report with a "Security First" header.  
+​3. Orchestration Diagram
+
+sequenceDiagram
+    User->>Coordinator: Request Audit and Docs
+    Coordinator->>Auditor: Scan /src for risks
+    Auditor-->>Coordinator: Vulnerability Report
+    Coordinator->>Doc Specialist: Document the findings
+    Doc Specialist-->>Coordinator: README update
+    Coordinator->>User: Final Package (Report + README)
+
