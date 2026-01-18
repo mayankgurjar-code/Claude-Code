@@ -44,6 +44,7 @@ Task B: "How Claude Thinks" via .claude.md
 - [span_19](start_span)Every response must include a "Summary" and "Action Items" section[span_19](end_span).
 
 Task C: Skill Design (skill/modules)
+
 ​Skill 1: skill/triage
 ​Purpose: Prioritizes issues and produces a remediation plan.
 ​Inputs: Bug report description, repository link.
@@ -64,6 +65,7 @@ Task C: Skill Design (skill/modules)
 ​Tools: grep, ls.
 ​Failure Modes: False positives in comments. Mitigation: Use regex to target active code only.
 ​Test Case: Scan a file with MD5; verify the skill flags it as insecure.
+
 ​Task D: Claude Engine: Coordination & Validation
 ​The Claude engine manages the "thinking" process through specific internal roles:  
 ​Planner: Decomposes a large task into smaller, executable steps.  
@@ -76,6 +78,7 @@ Task C: Skill Design (skill/modules)
 ​Step 3: Engine reads the specific file causing the error.  
 ​Step 4: Engine proposes a fix and asks User for confirmation (Ambiguity Handling).  
 ​Step 5: Engine applies the fix and runs a test script.  
+
 ​Task E & F: Creating Agents in Claude
 ​Agent 1: The Security Auditor
 ​Agent Name: Security Sentinel.
